@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 @RestController
 @RequestMapping("/api/post")
@@ -18,7 +20,6 @@ public class PostController {
     private HttpURLConnection connection;
     @Autowired
     private RequestHandlerServiceImpl restClient;
-
     public PostController() {
         this.responseHandler = new ResponseHandler();
     }
@@ -27,22 +28,22 @@ public class PostController {
     public ResponseEntity<ResponseHandler> getAll() {
         try {
             this.responseHandler.notFound();
-            String responseData = this.restClient.get("http://localhost:8090/api/post/all/1");
-            System.out.println(responseData);
+            ResponseHandler responseData = this.restClient.get("http://localhost:8090/api/post/all/1");
             return new ResponseEntity<ResponseHandler>(
                     this.responseHandler,
                     HttpStatus.valueOf(this.responseHandler.getStatusCode())
             );
-        } catch (Exception e) {
+        }catch (Exception e){
             return this.errorHandler(e);
         }
     }
 
-    private ResponseEntity<ResponseHandler> errorHandler(Exception e) {
+    private ResponseEntity<ResponseHandler> errorHandler(Exception e)
+    {
         this.responseHandler.setError(true);
         this.responseHandler.setData(e.getMessage());
         this.responseHandler.setStatusCode(500);
-        this.responseHandler.buildMetaData(0, 0, 0);
-        return new ResponseEntity<ResponseHandler>(this.responseHandler, HttpStatus.valueOf(this.responseHandler.getStatusCode()));
+        this.responseHandler.buildMetaData(0,0,0);
+        return new ResponseEntity<ResponseHandler>(this.responseHandler,HttpStatus.valueOf(this.responseHandler.getStatusCode()));
     }
 }

@@ -1,5 +1,8 @@
 package com.catcoderdev.auth.Service;
 
+import com.catcoderdev.auth.Model.ResponseHandler;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -21,11 +24,13 @@ public class RequestHandlerServiceImpl {
         this.headers.add("Accept", "*/*");
     }
 
-    public String get(String url) {
+    public ResponseHandler get(String url) throws JsonProcessingException {
         HttpEntity<String> request = new HttpEntity<String>("", this.headers);
         ResponseEntity<String> response = this.restClient.exchange(url, HttpMethod.GET, request, String.class);
         this.status = response.getStatusCode();
-        return response.getBody();
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(response.getBody(), ResponseHandler.class);
+
     }
 
     public String getUrl() {
