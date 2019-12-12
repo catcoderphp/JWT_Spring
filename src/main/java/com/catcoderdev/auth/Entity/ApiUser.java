@@ -3,7 +3,7 @@ package com.catcoderdev.auth.Entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "usersAPI")
+@Table(name = "users_api")
 public class ApiUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
