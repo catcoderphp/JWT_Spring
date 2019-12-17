@@ -17,6 +17,7 @@ public class ApiUser {
 
     public void setId(long id) {
         this.id = id;
+        //set the id
     }
 
     public String getUsername() {
